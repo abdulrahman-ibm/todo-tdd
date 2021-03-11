@@ -1,10 +1,17 @@
 const express = require("express")
-
+const dotenv = require("dotenv")
 const app = express()
-const PORT = 3000
+const todoRoutes = require("./routes/todo.routes")
+const mongoDb = require("./mongodb/mongodb.connect")
+
+dotenv.config()
+mongoDb.connect()
+app.use(express.json())
+
+app.use("/todos", todoRoutes)
 
 app.get("/", (req, res) => {
-    res.jsonŸ("Hello, World!")
+    res.json("Hello, World!")
 })
 
-app.listen(PORT, () => console.log(`Server is running at port ${PORT}...`))
+module.exports = app
