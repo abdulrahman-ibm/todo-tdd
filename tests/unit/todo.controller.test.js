@@ -21,14 +21,13 @@ beforeEach(() => {
 describe("TodoController.updateTodo", () => {
     beforeEach(() => {
         req.params.todoId = todoId
+        req.body = newTodo
     })
-    it("should have a updateTodo function", () => {
+    it("should have an updateTodo function", () => {
         expect(typeof TodoController.updateTodo).toBe("function")
     })
 
-    it("should update with TodoModel.findByIdAndUpdate", async () => {
-        req.params.todoId = todoId
-        req.body = newTodo
+    it("should update todos with TodoModel.findByIdAndUpdate", async () => {
         await TodoController.updateTodo(req, res, next)
 
         expect(TodoModel.findByIdAndUpdate).toBeCalledWith(todoId, newTodo, {
@@ -38,8 +37,6 @@ describe("TodoController.updateTodo", () => {
     })
 
     it("should return a 200 status code and JSON", async () => {
-        req.params.todoId = todoId
-        req.body = newTodo
         TodoModel.findByIdAndUpdate.mockReturnValue(newTodo)
         await TodoController.updateTodo(req, res, next)
 

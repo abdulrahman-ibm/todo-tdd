@@ -51,7 +51,4 @@ exports.updateTodo = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-
-
-
 }
