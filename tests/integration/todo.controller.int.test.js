@@ -4,7 +4,7 @@ const app = require("../../app")
 const endpointUrl = "/todos/"
 const newTodo = require("../mock-data/new-todo.json")
 
-let firstTodo
+let firstTodo, newTodoId
 
 describe(endpointUrl, () => {
     it("GET " + endpointUrl, async () => {
@@ -42,6 +42,8 @@ describe(endpointUrl, () => {
         expect(response.statusCode).toBe(201)
         expect(response.body.title).toBe(newTodo.title)
         expect(response.body.done).toBe(newTodo.done)
+        
+        newTodoId = response.body._id
     })
 
     it("should return error 500 on malformed data with POST" + endpointUrl, async () => {
@@ -53,5 +55,15 @@ describe(endpointUrl, () => {
         expect(response.body).toStrictEqual({
             message: "Todo validation failed: done: Path `done` is required."
         })
+    })
+
+    it("PUT " + endpointUrl, async () => {
+        const testData = {title: "Make integration test for PUT", done: true}
+        const res = await request(app).put(endpointUrl + newTodoId)
+        .send(testData)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.title).toBe(testData.title)
+        expect(res.body.done).toBe(testData.done)
     })
 })

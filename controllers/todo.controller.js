@@ -23,12 +23,35 @@ exports.getTodos = async (req, res, next) => {
 exports.getTodoById = async (req, res, next) => {
     try {
         const foundTodo = await TodoModel.findById(req.params.todoId)
-        if(foundTodo) {
-            res.status(200).json(foundTodo)   
+        if (foundTodo) {
+            res.status(200).json(foundTodo)
         } else {
             res.status(404).send()
         }
     } catch (err) {
         next(err)
     }
+}
+
+exports.updateTodo = async (req, res, next) => {
+    try {
+        const updatedTodo = await TodoModel.findByIdAndUpdate(
+            req.params.todoId,
+            req.body,
+            {
+                new: true,
+                useFindAndModify: false
+            })
+        
+        if (updatedTodo) {
+            res.status(200).json(updatedTodo)
+        } else {
+            res.status(404).send()
+        }
+    } catch (err) {
+        next(err)
+    }
+
+
+
 }
