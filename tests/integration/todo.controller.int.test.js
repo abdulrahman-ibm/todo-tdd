@@ -5,6 +5,7 @@ const endpointUrl = "/todos/"
 const newTodo = require("../mock-data/new-todo.json")
 
 let firstTodo, newTodoId
+const nonExistentTodo = "827fea05d7d50921c14e683c";
 
 describe(endpointUrl, () => {
     it("GET " + endpointUrl, async () => {
@@ -65,5 +66,20 @@ describe(endpointUrl, () => {
         expect(res.statusCode).toBe(200)
         expect(res.body.title).toBe(testData.title)
         expect(res.body.done).toBe(testData.done)
+    })
+
+    it("DELETE " + endpointUrl, async () => {
+        const res = await request(app)
+        .delete(endpointUrl + newTodoId)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body._id).toBe(newTodoId)
+    })
+
+    it("DELETE 404 " + endpointUrl, async () => {
+        const res = await request(app)
+        .delete(endpointUrl + nonExistentTodo)
+
+        expect(res.statusCode).toBe(404)
     })
 })
